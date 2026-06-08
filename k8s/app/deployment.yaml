@@ -41,11 +41,11 @@ spec:
                 name: transac-agg-api-secret
           resources:
             requests:
-              memory: "256Mi"
+              memory: "512Mi"
               cpu: "250m"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "1Gi"
+              cpu: "1000m"
           startupProbe:
             httpGet:
               path: /health
