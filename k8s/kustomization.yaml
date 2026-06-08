@@ -5,13 +5,4 @@ resources:
   - namespace.yaml
   - temporal/deployment.yaml
   - app/deployment.yaml
-
-secretGenerator:
-  - name: transac-agg-api-secret
-    namespace: dev
-    envs:
-      - app/.env
-    options:
-      disableNameSuffixHash: true
-      labels:
-        app: transac-agg-api
+  - app/sealed-secret.yaml
