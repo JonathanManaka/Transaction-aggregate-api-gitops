@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-  - temporal/deployment.yaml
+  # - temporal/deployment.yaml
   - app/deployment.yaml
   - app/sealed-secret.yaml
