@@ -7,10 +7,8 @@ metadata:
     app: transac-agg-api
 data:
   APP_PORT: "8080"
-  DB_HOST: host.docker.internal
-  DB_PORT: "5432"
-  DB_NAME: transac_agg_db
-  DB_USER: transac_user
+  POSTGRES_URL: jdbc:postgresql://host.docker.internal:5432/transac_aggr
+  POSTGRES_USERNAME: postgres
   TEMPORAL_HOST: temporal.dev.svc.cluster.local:7233
 ---
 apiVersion: apps/v1
