@@ -1,0 +1,56 @@
+name: GitOps CI
+
+on:
+  pull_request:
+    paths:
+      - "k8s/**"
+      - "gitops/**"
+
+jobs:
+  validate:
+    name: Validate Manifests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint YAML
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: k8s/ gitops/
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                max: 120
+              truthy:
+                allowed-values: ["true", "false"]
+
+      - name: Install kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: Kustomize build
+        run: kustomize build k8s/ > /tmp/rendered.yaml
+
+      - name: Install kubeconform
+        run: |
+          curl -sL https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz \
+            | tar xz -C /usr/local/bin
+
+      - name: Validate against Kubernetes schema
+        run: |
+          kubeconform \
+            -strict \
+            -summary \
+            -kubernetes-version 1.29.0 \
+            -skip SealedSecret \
+            /tmp/rendered.yaml
+
+      - name: Install conftest
+        run: |
+          curl -sL https://github.com/open-policy-agent/conftest/releases/latest/download/conftest_Linux_x86_64.tar.gz \
+            | tar xz -C /usr/local/bin
+
+      - name: Policy checks
+        run: conftest test /tmp/rendered.yaml --policy .github/policies/
