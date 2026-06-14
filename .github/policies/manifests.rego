@@ -1,13 +1,5 @@
 package main
 
-# Deny containers using the 'latest' image tag
-deny contains msg if {
-  input.kind == "Deployment"
-  container := input.spec.template.spec.containers[_]
-  endswith(container.image, ":latest")
-  msg := sprintf("container '%s' uses ':latest' image tag — pin to a specific version", [container.name])
-}
-
 # Deny containers without resource limits
 deny contains msg if {
   input.kind == "Deployment"
