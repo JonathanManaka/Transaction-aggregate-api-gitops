@@ -31,10 +31,11 @@ jobs:
           output_formats: sarif
           output_path: kics-results/
           ignore_on_exit: results
-          exclude_queries: >-
-            a88baa78-d1dc-4c78-bcf4-82c1954a52e2,
-            48a5beba-e4c0-4584-a2aa-e6894e4cf424,
-            302736f4-b16b-4b74-8eff-14a8bc4b6d1d
+          exclude_queries: "a88baa78-d1dc-4c78-bcf4-82c1954a52e2,48a5beba-e4c0-4584-a2aa-e6894e4cf424,302736f4-b16b-4b74-8eff-14a8bc4b6d1d"
+
+      - name: List KICS output
+        if: always()
+        run: ls -la kics-results/ || echo "kics-results directory is empty or missing"
 
       - name: Upload KICS results to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
