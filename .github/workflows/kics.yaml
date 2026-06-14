@@ -1,6 +1,9 @@
 name: KICS Security Scan
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     paths:
       - "k8s/**"
