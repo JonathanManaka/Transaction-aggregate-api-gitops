@@ -1,0 +1,6 @@
+# Postgres data directory mount is required for database persistence
+k8s/postgres/deployment.yaml:volumes:VolumeMount:OS Directory Write Permissions
+
+# SealedSecret values are encrypted ciphertext, not plaintext secrets
+k8s/app/sealed-secret.yaml
+k8s/postgres/sealed-secret.yaml

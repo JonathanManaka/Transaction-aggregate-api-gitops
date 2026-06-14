@@ -28,10 +28,25 @@ spec:
       labels:
         app: transac-agg-api
     spec:
+      volumes:
+        - name: tmp
+          emptyDir: {}
       containers:
         - name: transac-agg-api
           image: mphojmanaka/transac-aggr-api-app:latest
           imagePullPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
           ports:
             - containerPort: 8080
           envFrom:

@@ -29,9 +29,20 @@ spec:
       labels:
         app: postgres
     spec:
+      securityContext:
+        fsGroup: 70000
       containers:
         - name: postgres
           image: postgres:15
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 70000
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
           ports:
             - containerPort: 5432
           env:
@@ -58,12 +69,16 @@ spec:
             exec:
               command:
                 - pg_isready
+                - -U
+                - postgres
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             exec:
               command:
                 - pg_isready
+                - -U
+                - postgres
             initialDelaySeconds: 15
             periodSeconds: 20
       volumes:
@@ -79,9 +94,10 @@ metadata:
   labels:
     app: postgres
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
     - port: 5432
       targetPort: 5432
+      nodePort: 30543
   selector:
     app: postgres
