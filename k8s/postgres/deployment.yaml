@@ -30,13 +30,13 @@ spec:
         app: postgres
     spec:
       securityContext:
-        fsGroup: 70000
+        fsGroup: 999
       containers:
         - name: postgres
           image: postgres:15
           securityContext:
             runAsNonRoot: true
-            runAsUser: 70000
+            runAsUser: 999
             allowPrivilegeEscalation: false
             seccompProfile:
               type: RuntimeDefault
