@@ -1,0 +1,30 @@
+name: KICS Security Scan
+
+on:
+  pull_request:
+    paths:
+      - "k8s/**"
+      - "gitops/**"
+
+jobs:
+  kics:
+    name: KICS Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run KICS scan
+        uses: checkmarx/kics-github-action@v2
+        with:
+          path: k8s/
+          output_formats: sarif
+          output_path: kics-results/
+          ignore_on_exit: results
+
+      - name: Upload KICS results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: kics-results/results.sarif
