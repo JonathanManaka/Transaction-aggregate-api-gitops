@@ -32,6 +32,9 @@ spec:
         - name: transac-agg-api
           image: mphojmanaka/transac-aggr-api-app:latest
           imagePullPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 8080
           envFrom:
