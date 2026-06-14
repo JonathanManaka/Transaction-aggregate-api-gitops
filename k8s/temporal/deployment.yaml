@@ -35,7 +35,7 @@ spec:
           image: temporalio/auto-setup:1.24
           securityContext:
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: 10000
             allowPrivilegeEscalation: false
             seccompProfile:
               type: RuntimeDefault
@@ -116,7 +116,7 @@ spec:
           image: temporalio/ui:2.26.2
           securityContext:
             runAsNonRoot: true
-            runAsUser: 1000
+            runAsUser: 10000
             allowPrivilegeEscalation: false
             seccompProfile:
               type: RuntimeDefault
