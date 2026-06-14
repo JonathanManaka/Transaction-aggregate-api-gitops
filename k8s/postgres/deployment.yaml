@@ -38,6 +38,11 @@ spec:
             runAsNonRoot: true
             runAsUser: 70000
             allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
           ports:
             - containerPort: 5432
           env:
