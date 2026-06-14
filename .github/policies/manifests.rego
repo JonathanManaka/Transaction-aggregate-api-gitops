@@ -1,7 +1,7 @@
 package main
 
 # Deny containers using the 'latest' image tag
-deny[msg] {
+deny contains msg if {
   input.kind == "Deployment"
   container := input.spec.template.spec.containers[_]
   endswith(container.image, ":latest")
@@ -9,7 +9,7 @@ deny[msg] {
 }
 
 # Deny containers without resource limits
-deny[msg] {
+deny contains msg if {
   input.kind == "Deployment"
   container := input.spec.template.spec.containers[_]
   not container.resources.limits
@@ -17,7 +17,7 @@ deny[msg] {
 }
 
 # Deny containers without resource requests
-deny[msg] {
+deny contains msg if {
   input.kind == "Deployment"
   container := input.spec.template.spec.containers[_]
   not container.resources.requests
@@ -25,7 +25,7 @@ deny[msg] {
 }
 
 # Warn if no readiness probe
-warn[msg] {
+warn contains msg if {
   input.kind == "Deployment"
   container := input.spec.template.spec.containers[_]
   not container.readinessProbe
