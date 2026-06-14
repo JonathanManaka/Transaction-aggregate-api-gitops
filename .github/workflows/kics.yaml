@@ -21,6 +21,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Create output directory
+        run: mkdir -p kics-results
+
       - name: Run KICS scan
         uses: checkmarx/kics-github-action@v2
         with:
