@@ -30,13 +30,13 @@ spec:
         app: postgres
     spec:
       securityContext:
-        fsGroup: 999
+        fsGroup: 70000
       containers:
         - name: postgres
           image: postgres:15
           securityContext:
             runAsNonRoot: true
-            runAsUser: 999
+            runAsUser: 70000
             allowPrivilegeEscalation: false
           ports:
             - containerPort: 5432

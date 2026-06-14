@@ -33,6 +33,10 @@ spec:
       containers:
         - name: temporal
           image: temporalio/auto-setup:1.24
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 7233
               name: grpc
@@ -105,6 +109,10 @@ spec:
       containers:
         - name: temporal-ui
           image: temporalio/ui:2.26.2
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 8080
           env:
