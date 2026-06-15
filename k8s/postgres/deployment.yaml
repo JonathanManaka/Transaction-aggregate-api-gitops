@@ -33,11 +33,6 @@ spec:
       containers:
         - name: postgres
           image: postgres:15
-            seccompProfile:
-              type: RuntimeDefault
-            capabilities:
-              drop:
-                - ALL
           ports:
             - containerPort: 5432
           env:
