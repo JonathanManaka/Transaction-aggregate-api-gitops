@@ -8,13 +8,16 @@ metadata:
 spec:
   project: default
 
-  source:
-    repoURL: https://github.com/JonathanManaka/Transaction-aggregate-api-gitops.git
-    targetRevision: HEAD
-    path: k8s/temporal
-    helm:
-      valueFiles:
-        - values.yaml
+  sources:
+    - repoURL: https://charts.temporal.io
+      chart: temporal
+      targetRevision: 1.2.0
+      helm:
+        valueFiles:
+          - $values/k8s/temporal/values.yaml
+    - repoURL: https://github.com/JonathanManaka/Transaction-aggregate-api-gitops.git
+      targetRevision: HEAD
+      ref: values
 
   destination:
     server: https://kubernetes.default.svc
