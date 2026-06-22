@@ -12,6 +12,8 @@ spec:
     repoURL: https://github.com/JonathanManaka/Transaction-aggregate-api-gitops.git
     targetRevision: HEAD
     path: k8s
+    kustomize:
+      enableHelm: true
 
   destination:
     server: https://kubernetes.default.svc

@@ -4,6 +4,5 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - postgres/deployment.yaml
-  - temporal/deployment.yaml
   - app/deployment.yaml
   - app/sealed-secret.yaml
