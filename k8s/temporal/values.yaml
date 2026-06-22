@@ -1,0 +1,77 @@
+server:
+  image:
+    repository: temporalio/auto-setup
+    tag: 1.31.0
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  config:
+    persistence:
+      defaultStore: default
+      visibilityStore: visibility
+      numHistoryShards: 1
+      datastores:
+        default:
+          sql:
+            pluginName: postgres12
+            driverName: postgres12
+            databaseName: temporal
+            connectAddr: "postgres.dev.svc.cluster.local:5432"
+            connectProtocol: "tcp"
+            user: postgres
+            existingSecret: transac-agg-api-secret
+            secretKey: POSTGRES_PASSWORD
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
+        visibility:
+          sql:
+            pluginName: postgres12
+            driverName: postgres12
+            databaseName: temporal_visibility
+            connectAddr: "postgres.dev.svc.cluster.local:5432"
+            connectProtocol: "tcp"
+            user: postgres
+            existingSecret: transac-agg-api-secret
+            secretKey: POSTGRES_PASSWORD
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
+
+web:
+  enabled: true
+  image:
+    repository: temporalio/ui
+    tag: 2.49.1
+  replicaCount: 1
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+  service:
+    type: NodePort
+    port: 8080
+    nodePort: 30081
+  env:
+    - name: TEMPORAL_CORS_ORIGINS
+      value: http://localhost:3000
+
+cassandra:
+  enabled: false
+
+mysql:
+  enabled: false
+
+postgresql:
+  enabled: false
+
+admintools:
+  enabled: false
