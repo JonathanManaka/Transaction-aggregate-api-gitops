@@ -49,7 +49,7 @@ server:
       capabilities:
         drop:
           - ALL
-config:
+  config:
     persistence:
       numHistoryShards: 1
       datastores:
@@ -64,7 +64,7 @@ config:
             connectProtocol: "tcp"
             user: postgres
             existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
+            secretKey: POSTGRES_PASSWORD  # kics-scan ignore-line
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
@@ -79,7 +79,7 @@ config:
             connectProtocol: "tcp"
             user: postgres
             existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
+            secretKey: POSTGRES_PASSWORD  # kics-scan ignore-line
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
