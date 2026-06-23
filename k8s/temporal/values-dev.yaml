@@ -44,6 +44,11 @@ server:
         drop:
           - ALL
   config:
+    clusterMetadata:
+      clusterInformation:
+        active:
+          rpcAddress: "temporal-frontend.dev.svc.cluster.local:7233"
+          httpAddress: "temporal-frontend.dev.svc.cluster.local:7243"
     persistence:
       numHistoryShards: 1
       datastores:
@@ -58,7 +63,7 @@ server:
             connectProtocol: "tcp"
             user: postgres
             existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
+            secretKey: POSTGRES_PASSWORD  # kics-scan ignore-line
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
@@ -73,7 +78,7 @@ server:
             connectProtocol: "tcp"
             user: postgres
             existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
+            secretKey: POSTGRES_PASSWORD  # kics-scan ignore-line
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
