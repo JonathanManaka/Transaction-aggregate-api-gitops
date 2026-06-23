@@ -1,0 +1,13 @@
+extends: default
+
+ignore: |
+  k8s/temporal/templates/
+  k8s/temporal/values/
+  k8s/temporal/ci/
+
+rules:
+  line-length:
+    max: 120
+  braces:
+    forbid: false
+  comments-indentation: disable
