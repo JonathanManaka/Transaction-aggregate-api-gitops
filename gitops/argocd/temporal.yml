@@ -8,18 +8,14 @@ metadata:
 spec:
   project: default
 
-  sources:
-    - repoURL: https://go.temporal.io/helm-charts/
-      chart: temporal
-      targetRevision: 1.2.0
-      helm:
-        releaseName: temporal
-        valueFiles:
-          - $values/k8s/temporal/values.yaml
-          - $values/k8s/temporal/values-dev.yaml
-    - repoURL: https://github.com/JonathanManaka/Transaction-aggregate-api-gitops.git
-      targetRevision: HEAD
-      ref: values
+  source:
+    repoURL: https://github.com/JonathanManaka/Transaction-aggregate-api-gitops.git
+    targetRevision: HEAD
+    path: k8s/temporal
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-dev.yaml
 
   destination:
     server: https://kubernetes.default.svc
