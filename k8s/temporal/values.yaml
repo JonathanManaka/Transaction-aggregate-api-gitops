@@ -1,56 +1,310 @@
+nameOverride: ""
+fullnameOverride: ""
+debug: false
+imagePullSecrets: []
+serviceAccount:
+  create: false
+  name:
+  extraAnnotations:
+additionalAnnotations: {}
+additionalLabels: {}
+extraObjects: []
+
 server:
+  enabled: true
   image:
     repository: temporalio/server
     tag: 1.31.0
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  readinessProbe: {}
+  metrics:
+    annotations:
+      enabled: true
+    serviceMonitor:
+      enabled: false
+      interval: 30s
+      additionalLabels: {}
+      metricRelabelings: []
+  deploymentLabels: {}
+  deploymentAnnotations: {}
+  deploymentStrategy: {}
+  podAnnotations: {}
+  podLabels: {}
+  secretLabels: {}
+  secretAnnotations: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  minReadySeconds: 0
+  terminationGracePeriodSeconds: null
+  additionalVolumes: []
+  additionalVolumeMounts: []
+  additionalEnv: []
+  additionalEnvSecretName: ""
+  additionalEnvConfigMapName: ""
+  additionalInitContainers: []
+  securityContext:
+    fsGroup: 1000
+    runAsUser: 1000
   config:
+    logLevel: "debug,info"
     persistence:
       defaultStore: default
       visibilityStore: visibility
       numHistoryShards: 512
       datastores:
         default:
-          sql:
-            createDatabase: true
-            manageSchema: true
-            pluginName: postgres12
-            driverName: postgres12
-            databaseName: temporal
-            connectAddr: "postgres.dev.svc.cluster.local:5432"
-            connectProtocol: "tcp"
-            user: postgres
-            existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD
-            maxConns: 20
-            maxIdleConns: 20
-            maxConnLifetime: "1h"
         visibility:
-          sql:
-            createDatabase: true
-            manageSchema: true
-            pluginName: postgres12
-            driverName: postgres12
-            databaseName: temporal_visibility
-            connectAddr: "postgres.dev.svc.cluster.local:5432"
-            connectProtocol: "tcp"
-            user: postgres
-            existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD
-            maxConns: 20
-            maxIdleConns: 20
-            maxConnLifetime: "1h"
+    metrics:
+      tags: {}
+      prometheus:
+        timerType: histogram
+        listenAddress: "0.0.0.0:9090"
+    namespaces:
+      create: false
+      namespace:
+        - name: default
+          retention: 3d
+  frontend:
+    enabled: true
+    service:
+      annotations: {}
+      type: ClusterIP
+      port: 7233
+      appProtocol: tcp
+      membershipPort: 6933
+      membershipAppProtocol: tcp
+      httpPort: 7243
+      httpAppProtocol: http
+    readinessProbe: {}
+    ingress:
+      enabled: false
+      annotations: {}
+      hosts:
+        - "/"
+      tls: []
+    metrics:
+      annotations:
+        enabled: true
+      serviceMonitor: {}
+      prometheus: {}
+    deploymentLabels: {}
+    deploymentAnnotations: {}
+    deploymentStrategy: {}
+    podAnnotations: {}
+    podLabels: {}
+    serviceLabels: {}
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: []
+    podDisruptionBudget: {}
+  internal-frontend:
+    enabled: false
+    service:
+      annotations: {}
+      type: ClusterIP
+      port: 7236
+      appProtocol: tcp
+      membershipPort: 6936
+      membershipAppProtocol: tcp
+      httpPort: 7246
+      httpAppProtocol: http
+    readinessProbe: {}
+    metrics:
+      annotations:
+        enabled: true
+      serviceMonitor: {}
+      prometheus: {}
+    deploymentLabels: {}
+    deploymentAnnotations: {}
+    deploymentStrategy: {}
+    podAnnotations: {}
+    podLabels: {}
+    serviceLabels: {}
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: []
+    podDisruptionBudget: {}
+  history:
+    enabled: true
+    service:
+      port: 7234
+      appProtocol: tcp
+      membershipPort: 6934
+      membershipAppProtocol: tcp
+    readinessProbe: {}
+    metrics:
+      annotations:
+        enabled: true
+      serviceMonitor: {}
+      prometheus: {}
+    deploymentLabels: {}
+    deploymentAnnotations: {}
+    deploymentStrategy: {}
+    podAnnotations: {}
+    podLabels: {}
+    serviceLabels: {}
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: []
+    podDisruptionBudget: {}
+  matching:
+    enabled: true
+    service:
+      port: 7235
+      appProtocol: tcp
+      membershipPort: 6935
+      membershipAppProtocol: tcp
+    readinessProbe: {}
+    metrics:
+      annotations:
+        enabled: true
+      serviceMonitor: {}
+      prometheus: {}
+    deploymentLabels: {}
+    deploymentAnnotations: {}
+    deploymentStrategy: {}
+    podAnnotations: {}
+    podLabels: {}
+    serviceLabels: {}
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: []
+    podDisruptionBudget: {}
+  worker:
+    enabled: true
+    service:
+      port: 7239
+      appProtocol: tcp
+      membershipPort: 6939
+      membershipAppProtocol: tcp
+    readinessProbe: {}
+    metrics:
+      annotations:
+        enabled: true
+      serviceMonitor: {}
+      prometheus: {}
+    deploymentLabels: {}
+    deploymentAnnotations: {}
+    deploymentStrategy: {}
+    podAnnotations: {}
+    podLabels: {}
+    serviceLabels: {}
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    additionalEnv: []
+    containerSecurityContext: {}
+    topologySpreadConstraints: []
+    podDisruptionBudget: {}
+
+admintools:
+  enabled: true
+  image:
+    repository: temporalio/admin-tools
+    tag: "1.31.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 22
+    annotations: {}
+  deploymentLabels: {}
+  deploymentAnnotations: {}
+  deploymentStrategy: {}
+  podLabels: {}
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  additionalVolumes: []
+  additionalVolumeMounts: []
+  additionalEnv: []
+  additionalEnvSecretName: ""
+  additionalEnvConfigMapName: ""
+  additionalInitContainers: []
+  resources: {}
+  containerSecurityContext: {}
+  securityContext: {}
+  minReadySeconds: 0
+  podDisruptionBudget: {}
 
 web:
   enabled: true
+  replicaCount: 1
   image:
     repository: temporalio/ui
     tag: 2.49.1
-
-admintools:
-  enabled: false
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8080
+    appProtocol: http
+    annotations: {}
+  readinessProbe:
+    initialDelaySeconds: 10
+    httpGet:
+      path: /healthz
+      port: http
+  ingress:
+    enabled: false
+    annotations: {}
+    hosts:
+      - "/"
+    tls: []
+  deploymentLabels: {}
+  deploymentAnnotations: {}
+  deploymentStrategy: {}
+  podAnnotations: {}
+  podLabels: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  additionalVolumes: []
+  additionalVolumeMounts: []
+  additionalEnv: []
+  additionalEnvSecretName: ""
+  additionalEnvConfigMapName: ""
+  containerSecurityContext: {}
+  securityContext: {}
+  topologySpreadConstraints: []
+  minReadySeconds: 0
+  podDisruptionBudget: {}
 
 schema:
   useHelmHooks: true
+  backoffLimit: 100
+  ttlSecondsAfterFinished: 86400
+  jobAnnotations: {}
+  podAnnotations: {}
+  podLabels: {}
+  resources: {}
+  containerSecurityContext: {}
+  securityContext: {}
 
 shims:
-  dockerize: false
-  elasticsearchTool: false
+  dockerize: true
+  elasticsearchTool: true
+
+test:
+  podAnnotations: {}
+  resources: {}

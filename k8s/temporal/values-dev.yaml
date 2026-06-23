@@ -43,6 +43,40 @@ server:
       capabilities:
         drop:
           - ALL
+  config:
+    persistence:
+      numHistoryShards: 1
+      datastores:
+        default:
+          sql:
+            createDatabase: true
+            manageSchema: true
+            pluginName: postgres12
+            driverName: postgres12
+            databaseName: temporal
+            connectAddr: "postgres.dev.svc.cluster.local:5432"
+            connectProtocol: "tcp"
+            user: postgres
+            existingSecret: transac-agg-api-secret
+            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
+        visibility:
+          sql:
+            createDatabase: true
+            manageSchema: true
+            pluginName: postgres12
+            driverName: postgres12
+            databaseName: temporal_visibility
+            connectAddr: "postgres.dev.svc.cluster.local:5432"
+            connectProtocol: "tcp"
+            user: postgres
+            existingSecret: transac-agg-api-secret
+            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
 
 web:
   replicaCount: 1
@@ -72,3 +106,10 @@ web:
   additionalEnv:
     - name: TEMPORAL_CORS_ORIGINS
       value: http://localhost:3000
+
+admintools:
+  enabled: false
+
+shims:
+  dockerize: false
+  elasticsearchTool: false

@@ -23,6 +23,9 @@ jobs:
             extends: default
             ignore: |
               **/sealed-secret.yaml
+              k8s/temporal/templates/
+              k8s/temporal/values/
+              k8s/temporal/ci/
             rules:
               line-length:
                 max: 120
