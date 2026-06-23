@@ -1,5 +1,11 @@
 server:
   replicaCount: 1
+  config:
+    clusterMetadata:
+      clusterInformation:
+        active:
+          rpcAddress: "temporal-frontend.dev.svc.cluster.local:7233"
+          httpAddress: "temporal-frontend.dev.svc.cluster.local:7243"
   securityContext:
     runAsUser: 1000
     runAsGroup: 3000
@@ -43,7 +49,7 @@ server:
       capabilities:
         drop:
           - ALL
-  config:
+config:
     persistence:
       numHistoryShards: 1
       datastores:
