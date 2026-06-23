@@ -56,6 +56,8 @@ server:
           rpcName: "temporal-frontend"
           rpcAddress: "temporal-frontend.dev.svc.cluster.local:7233"
           httpAddress: "temporal-frontend.dev.svc.cluster.local:7243"
+    publicClient:
+      hostPort: "temporal-frontend.dev.svc.cluster.local:7233"
     persistence:
       numHistoryShards: 1
       datastores:
