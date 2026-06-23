@@ -45,8 +45,15 @@ server:
           - ALL
   config:
     clusterMetadata:
+      enableGlobalNamespace: false
+      failoverVersionIncrement: 10
+      masterClusterName: "active"
+      currentClusterName: "active"
       clusterInformation:
         active:
+          enabled: true
+          initialFailoverVersion: 1
+          rpcName: "temporal-frontend"
           rpcAddress: "temporal-frontend.dev.svc.cluster.local:7233"
           httpAddress: "temporal-frontend.dev.svc.cluster.local:7243"
     persistence:
