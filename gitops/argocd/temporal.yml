@@ -13,8 +13,10 @@ spec:
       chart: temporal
       targetRevision: 1.2.0
       helm:
+        releaseName: temporal
         valueFiles:
           - $values/k8s/temporal/values.yaml
+          - $values/k8s/temporal/values-dev.yaml
     - repoURL: https://github.com/JonathanManaka/Transaction-aggregate-api-gitops.git
       targetRevision: HEAD
       ref: values
