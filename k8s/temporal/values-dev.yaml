@@ -58,7 +58,7 @@ server:
             connectProtocol: "tcp"
             user: postgres
             existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD
+            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
@@ -73,7 +73,7 @@ server:
             connectProtocol: "tcp"
             user: postgres
             existingSecret: transac-agg-api-secret
-            secretKey: POSTGRES_PASSWORD
+            secretKey: POSTGRES_PASSWORD # kics-scan ignore-line
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
