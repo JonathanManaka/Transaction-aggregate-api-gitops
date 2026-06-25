@@ -43,6 +43,11 @@ server:
         drop:
           - ALL
   worker:
+    readinessProbe:
+      tcpSocket:
+        port: membership
+      initialDelaySeconds: 30
+      periodSeconds: 10
     containerSecurityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -50,6 +55,11 @@ server:
         drop:
           - ALL
   config:
+    namespaces:
+      create: true
+      namespace:
+        - name: default
+          retention: 3d
     clusterMetadata:
       enableGlobalNamespace: false
       failoverVersionIncrement: 10
@@ -128,7 +138,7 @@ web:
       value: http://localhost:3000
 
 admintools:
-  enabled: false
+  enabled: true
 
 shims:
   dockerize: false
