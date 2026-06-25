@@ -60,6 +60,12 @@ server:
       namespace:
         - name: default
           retention: 3d
+    authorization:
+      jwtKeyProvider:
+        keySourceURIs: []
+      permissionsClaimName: permissions
+      authorizer: ""
+      claimMapper: ""
     clusterMetadata:
       enableGlobalNamespace: false
       failoverVersionIncrement: 10
