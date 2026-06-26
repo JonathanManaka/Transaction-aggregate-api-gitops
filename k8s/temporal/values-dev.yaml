@@ -54,18 +54,16 @@ server:
       capabilities:
         drop:
           - ALL
+  additionalEnv:
+    - name: TEMPORAL_ALLOW_NO_AUTH
+      value: "true"
+
   config:
     namespaces:
       create: true
       namespace:
         - name: default
           retention: 3d
-    authorization:
-      jwtKeyProvider:
-        keySourceURIs: []
-      permissionsClaimName: permissions
-      authorizer: ""
-      claimMapper: ""
     clusterMetadata:
       enableGlobalNamespace: false
       failoverVersionIncrement: 10
