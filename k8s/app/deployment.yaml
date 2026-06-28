@@ -9,7 +9,7 @@ data:
   APP_PORT: "8080"
   POSTGRES_URL: jdbc:postgresql://postgres.dev.svc.cluster.local:5432/transac_aggr
   POSTGRES_USERNAME: postgres
-  TEMPORAL_HOST: temporal-frontend.dev.svc.cluster.local:7233
+  TEMPORAL_HOST: temporal-frontend:7233
 ---
 apiVersion: apps/v1
 kind: Deployment
