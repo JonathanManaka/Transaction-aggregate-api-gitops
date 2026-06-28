@@ -34,7 +34,7 @@ spec:
           emptyDir: {}
       containers:
         - name: transac-agg-api
-          image: mphojmanaka/transac-aggr-api-app:a74988f
+          image: mphojmanaka/transac-aggr-api-app:71b4c4e
           imagePullPolicy: Always
           securityContext:
             runAsNonRoot: true
