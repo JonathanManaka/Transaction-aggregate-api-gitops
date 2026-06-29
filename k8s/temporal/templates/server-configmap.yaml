@@ -130,7 +130,7 @@ data:
 
     {{- if not (index $.Values.server "internal-frontend").enabled }}
     publicClient:
-      hostPort: "{{ include "temporal.componentname" (list $ "frontend") }}:{{ $server.frontend.service.port }}"
+      hostPort: "{{ include "temporal.componentname" (list $ "frontend") }}.{{ $.Release.Namespace }}.svc.cluster.local:{{ $server.frontend.service.port }}"
     {{- end }}
 
     dynamicConfigClient:
