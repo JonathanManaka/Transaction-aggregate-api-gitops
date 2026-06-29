@@ -20,6 +20,12 @@ server:
       initialDelaySeconds: 30
       periodSeconds: 10
       failureThreshold: 3
+    livenessProbe:
+      tcpSocket:
+        port: rpc
+      initialDelaySeconds: 150
+      periodSeconds: 20
+      failureThreshold: 10
     containerSecurityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -29,6 +35,12 @@ server:
         add:
           - NET_BIND_SERVICE
   history:
+    livenessProbe:
+      tcpSocket:
+        port: rpc
+      initialDelaySeconds: 150
+      periodSeconds: 20
+      failureThreshold: 10
     containerSecurityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -36,6 +48,12 @@ server:
         drop:
           - ALL
   matching:
+    livenessProbe:
+      tcpSocket:
+        port: rpc
+      initialDelaySeconds: 150
+      periodSeconds: 20
+      failureThreshold: 10
     containerSecurityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
