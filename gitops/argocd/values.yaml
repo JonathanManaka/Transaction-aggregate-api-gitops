@@ -1,0 +1,18 @@
+configs:
+  params:
+    server.disable.auth: "true"
+
+repoServer:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+
+  livenessProbe:
+    timeoutSeconds: 30
+    failureThreshold: 5
+  readinessProbe:
+    timeoutSeconds: 30
+    failureThreshold: 5
