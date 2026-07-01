@@ -6,3 +6,9 @@ resources:
   - postgres/deployment.yaml
   - app/deployment.yaml
   - app/sealed-secret.yaml
+
+# Image tag is managed by CI via `kustomize edit set image` — do not edit by hand.
+# This overrides the tag on the image in app/deployment.yaml.
+images:
+  - name: mphojmanaka/transac-aggr-api-app
+    newTag: 4a0a398
