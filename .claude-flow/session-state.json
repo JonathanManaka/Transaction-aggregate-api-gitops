@@ -1,0 +1,18 @@
+{
+  "sessionId": "",
+  "sessionStart": "2026-06-29T19:22:29.250Z",
+  "promptCount": 41,
+  "toolCalls": {
+    "read": 9,
+    "write": 0,
+    "edit": 3,
+    "bash": 11,
+    "task": 0,
+    "grep": 0,
+    "glob": 0,
+    "other": 0
+  },
+  "totalCalls": 23,
+  "errors": 0,
+  "lastActivity": "2026-06-29T20:12:09.165Z"
+}
