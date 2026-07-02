@@ -1,0 +1,12 @@
+apiVersion: v2
+name: prometheus
+description: Umbrella chart vendoring the upstream Prometheus chart for this cluster
+type: application
+version: 0.1.0
+dependencies:
+  - name: prometheus
+    # Pin to a real published version. Verify with:
+    #   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    #   helm repo update && helm search repo prometheus-community/prometheus --versions | head
+    version: 25.27.0
+    repository: https://prometheus-community.github.io/helm-charts
