@@ -2,10 +2,13 @@
 # Values are nested under the dependency name 'grafana'. Anything omitted
 # uses the chart defaults.
 grafana:
-  # CHANGE THIS before it leaves your laptop.
-  adminPassword: admin
 
-  # No PVC on a throwaway local cluster — dashboards you import are ephemeral.
+  envValueFrom:
+    GF_SECURITY_ADMIN_PASSWORD:
+      secretKeyRef:
+        name: grafana-secret
+        key: grafana-admin-password
+
   persistence:
     enabled: false
 
@@ -20,8 +23,6 @@ grafana:
     limits:
       memory: 256Mi
 
-  # Pre-wire the Prometheus server (separate release in the 'prometheus' ns)
-  # as the default datasource, so Grafana works the moment it starts.
   datasources:
     datasources.yaml:
       apiVersion: 1
