@@ -36,6 +36,10 @@ jobs:
               line-length:
                 max: 120
               document-start: disable
+              indentation:
+                # kustomize edit writes block sequences flush-left; allow that
+                # while still permitting indented sequences in other files
+                indent-sequences: consistent
               truthy:
                 allowed-values: ["true", "false"]
 
