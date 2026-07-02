@@ -30,5 +30,7 @@ grafana:
         - name: Prometheus
           type: prometheus
           access: proxy
-          url: http://prometheus-server.prometheus.svc.cluster.local
+          # same-namespace short name — resolves in whatever env ns this runs in
+          # (dev/int/qa/prod), so no per-env edit needed on promotion
+          url: http://prometheus-server
           isDefault: true
