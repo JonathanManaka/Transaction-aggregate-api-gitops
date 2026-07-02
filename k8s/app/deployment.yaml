@@ -28,6 +28,11 @@ spec:
     metadata:
       labels:
         app: transac-agg-api
+      annotations:
+        # Scraped by Prometheus' default kubernetes-pods job.
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "8080"
     spec:
       volumes:
         - name: tmp

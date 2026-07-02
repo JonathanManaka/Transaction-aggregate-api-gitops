@@ -1,0 +1,37 @@
+# Overrides for the vendored upstream Prometheus chart (see Chart.yaml).
+# Because Prometheus is a dependency, all its values are nested under its
+# dependency name 'prometheus'. Anything omitted uses the chart defaults.
+prometheus:
+  # ClusterRole for service discovery — Prometheus needs it to find pods/nodes.
+  rbac:
+    create: true
+
+  # Not needed for local visualisation.
+  alertmanager:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+
+  # Cluster/pod/node metrics (on by default; shown for clarity):
+  #   kube-state-metrics -> pod status, restarts, replicas
+  #   node-exporter      -> node & container CPU / memory
+  # The default scrapeConfigs also include a 'kubernetes-pods' job that scrapes
+  # pods carrying the prometheus.io/scrape annotation — i.e. your app.
+  kube-state-metrics:
+    enabled: true
+  prometheus-node-exporter:
+    enabled: true
+
+  server:
+    retention: 6h            # short retention; local only
+    persistentVolume:
+      enabled: false         # emptyDir — no PVC on a throwaway cluster
+    service:
+      type: NodePort
+      nodePort: 30090        # Prometheus UI at http://localhost:30090
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      limits:
+        memory: 1Gi
