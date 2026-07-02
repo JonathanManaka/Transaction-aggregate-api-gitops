@@ -1,0 +1,12 @@
+apiVersion: v2
+name: grafana
+description: Umbrella chart vendoring the upstream Grafana chart for this cluster
+type: application
+version: 0.1.0
+dependencies:
+  - name: grafana
+    # Pin to a real published version. Verify with:
+    #   helm repo add grafana https://grafana.github.io/helm-charts
+    #   helm repo update && helm search repo grafana/grafana --versions | head
+    version: 8.5.1
+    repository: https://grafana.github.io/helm-charts
