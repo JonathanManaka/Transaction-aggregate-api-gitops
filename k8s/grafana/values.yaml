@@ -1,0 +1,33 @@
+# Overrides for the vendored upstream Grafana chart (see Chart.yaml).
+# Values are nested under the dependency name 'grafana'. Anything omitted
+# uses the chart defaults.
+grafana:
+  # CHANGE THIS before it leaves your laptop.
+  adminPassword: admin
+
+  # No PVC on a throwaway local cluster — dashboards you import are ephemeral.
+  persistence:
+    enabled: false
+
+  service:
+    type: NodePort
+    nodePort: 30300          # Grafana UI at http://localhost:30300
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+
+  # Pre-wire the Prometheus server (separate release in the 'prometheus' ns)
+  # as the default datasource, so Grafana works the moment it starts.
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://prometheus-server.prometheus.svc.cluster.local
+          isDefault: true
