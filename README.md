@@ -48,9 +48,7 @@ NodePorts (single-node local cluster).
 ## Prerequisites
 
 - A local Kubernetes cluster. On this machine that's **Rancher Desktop**:
-  ```bash
-  export DOCKER_HOST=$(docker context inspect --format '{{.Endpoints.docker.Host}}')
-  ```
+
 - `kubectl` (pointed at the local cluster: `kubectl config current-context`)
 - `helm` and [`helmfile`](https://github.com/helmfile/helmfile)
 - `kubeseal` (only if you need to (re)create sealed secrets)
@@ -77,19 +75,6 @@ helm install sealed-secrets sealed-secrets/sealed-secrets \
 > The `SealedSecret` objects in `k8s/` are decrypted by **this** controller's
 > private key. If the controller's key differs from the one used to seal them,
 > the secrets won't unseal — you'll need to re-seal (see **Secrets** below).
-
-### 3. Install ArgoCD
-```bash
-cd gitops/argocd
-helmfile apply          # installs argo/argo-cd v7.1.1 into the 'argocd' namespace
-```
-
-### 4. Expose the ArgoCD UI (NodePort 30443)
-```bash
-kubectl apply -f gitops/argocd/service.yaml
-```
-Auth is disabled in this local setup (`server.disable.auth: "true"` in
-`gitops/argocd/values.yaml`), so http://localhost:30443 opens straight to the UI.
 
 ### 5. Register the applications
 ```bash
@@ -118,12 +103,6 @@ pushing to `main`** — not by editing the cluster.
 ```bash
 curl http://localhost:30080/health
 curl http://localhost:30080/actuator/prometheus | head   # metrics Prometheus scrapes
-```
-
-**Postgres** (see the Kerberos note below):
-```bash
-PW=$(kubectl get secret transac-agg-api-secret -n dev -o jsonpath='{.data.POSTGRES_PASSWORD}' | base64 -d)
-PGGSSENCMODE=disable PGPASSWORD="$PW" psql "host=127.0.0.1 port=30543 dbname=transac_aggr user=postgres" -c '\dt'
 ```
 
 **Prometheus** — http://localhost:30090 → *Status → Targets* (the app should be `UP`).
@@ -191,30 +170,9 @@ kubectl delete pvc postgres-pvc -n dev
 kubectl scale deploy/postgres -n dev --replicas=1
 ```
 
-**`psql` prints Kerberos/GSSAPI errors** (`Cannot find KDC for realm ...MICROSOFTONLINE.COM`).
-Noise from the client trying Kerberos first in the Entra environment. Prefix with
-`PGGSSENCMODE=disable` and connect to `host=127.0.0.1` (avoids the `::1` refused line).
-
-**ArgoCD says `Synced` but the change isn't live.**
-`Synced` means the cluster matches the *synced git revision*. Make sure your
-commit is actually on the branch ArgoCD tracks and pushed to the repo in the
-Application's `repoURL` (`JonathanManaka/Transaction-aggregate-api-gitops`), then
-`kubectl -n argocd annotate application <name> argocd.argoproj.io/refresh=hard --overwrite`.
-
 **`secret "grafana-secret" not found`.**
 The sealed-secrets controller either isn't installed (step 2) or can't unseal
 with its current key — re-seal `k8s/grafana/sealed-secret.yaml` against this
 cluster's controller and push.
 
 ---
-
-## Teardown
-
-```bash
-kubectl delete -f gitops/argocd/deployment.yml \
-               -f gitops/argocd/prometheus.yml \
-               -f gitops/argocd/grafana.yml \
-               -f gitops/argocd/temporal.yml
-cd gitops/argocd && helmfile destroy
-kubectl delete pvc postgres-pvc -n dev      # if you want to drop DB data
-```
