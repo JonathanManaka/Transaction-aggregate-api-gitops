@@ -35,11 +35,6 @@ grafana:
           url: http://prometheus-server
           isDefault: true
 
-  # Dashboards provisioned as code so they survive pod restarts
-  # (persistence is disabled above — anything created in the UI is lost).
-  # Each dashboard is imported from grafana.com by its ID; the Grafana
-  # init container fetches the pinned revision at startup, so the cluster
-  # needs egress to grafana.com. Bump `revision` to pull a newer version.
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
