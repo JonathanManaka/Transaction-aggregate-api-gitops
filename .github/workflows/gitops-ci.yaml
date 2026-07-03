@@ -8,9 +8,6 @@ on:
       - "k8s/**"
       - "gitops/**"
   pull_request:
-    paths:
-      - "k8s/**"
-      - "gitops/**"
 
 jobs:
   validate:
