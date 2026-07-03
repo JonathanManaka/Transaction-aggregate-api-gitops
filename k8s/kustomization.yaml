@@ -4,8 +4,9 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - postgres/deployment.yaml
+- postgres/sealed-secret.yaml
 - app/deployment.yaml
-- app/sealed-secret.yaml
+- grafana/sealed-secret.yaml
 
 # Image tag is managed by CI via `kustomize edit set image` — do not edit by hand.
 # This overrides the tag on the image in app/deployment.yaml.
