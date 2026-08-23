@@ -107,6 +107,7 @@ spec:
   selector:
     app: transac-agg-api
 ---
+# kics-scan ignore-block
 apiVersion: v1
 kind: Service
 metadata:

@@ -13,4 +13,4 @@ resources:
 images:
 - name: mphojmanaka/transac-aggr-api-app
   newName: mphojmanaka/transac-aggr-api-app
-  newTag: 83ea217
+  newTag: 4a0a398
