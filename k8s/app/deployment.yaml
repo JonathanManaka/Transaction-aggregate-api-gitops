@@ -25,10 +25,19 @@ spec:
     matchLabels:
       app: transac-agg-api
   strategy:
-    blueGreen:
-      activeService: transac-agg-api
-      previewService: transac-agg-api-preview
-      autoPromotionEnabled: false
+    canary:
+      canaryService: transac-agg-api-canary
+      stableService: transac-agg-api-stable
+      trafficRouting:
+        traefik:
+          weightedTraefikServiceName: transac-agg-api-traefik
+      steps:
+        - setWeight: 30
+        - pause: {}
+        - setWeight: 60
+        - pause: {}
+        - setWeight: 100
+        - pause: {}
   template:
     metadata:
       labels:
@@ -94,16 +103,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: transac-agg-api
+  name: transac-agg-api-stable
   namespace: dev
   labels:
     app: transac-agg-api
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
-    - port: 8080
+    - name: http
+      port: 8080
       targetPort: 8080
-      nodePort: 30080
   selector:
     app: transac-agg-api
 ---
@@ -111,14 +120,44 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: transac-agg-api-preview
+  name: transac-agg-api-canary
   namespace: dev
   labels:
     app: transac-agg-api
 spec:
   type: ClusterIP
   ports:
-    - port: 8080
+    - name: http
+      port: 8080
       targetPort: 8080
   selector:
     app: transac-agg-api
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: TraefikService
+metadata:
+  name: transac-agg-api-traefik
+  namespace: dev
+spec:
+  weighted:
+    services:
+      - name: transac-agg-api-stable
+        port: 8080
+      - name: transac-agg-api-canary
+        port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: transac-agg-api
+  namespace: dev
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: transac-agg-api-traefik
+          namespace: dev
+          kind: TraefikService
