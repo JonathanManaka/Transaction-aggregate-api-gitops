@@ -133,7 +133,7 @@ spec:
   selector:
     app: transac-agg-api
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: TraefikService
 metadata:
   name: transac-agg-api-traefik
@@ -146,7 +146,7 @@ spec:
       - name: transac-agg-api-canary
         port: 8080
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: transac-agg-api
