@@ -11,8 +11,8 @@ data:
   POSTGRES_USERNAME: postgres
   TEMPORAL_HOST: temporal-frontend:7233
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: transac-agg-api
   namespace: dev
@@ -24,12 +24,16 @@ spec:
   selector:
     matchLabels:
       app: transac-agg-api
+  strategy:
+    blueGreen:
+      activeService: transac-agg-api
+      previewService: transac-agg-api-preview
+      autoPromotionEnabled: false
   template:
     metadata:
       labels:
         app: transac-agg-api
       annotations:
-        # Scraped by Prometheus' default kubernetes-pods job.
         prometheus.io/scrape: "true"
         prometheus.io/path: "/actuator/prometheus"
         prometheus.io/port: "8080"
@@ -100,5 +104,20 @@ spec:
     - port: 8080
       targetPort: 8080
       nodePort: 30080
+  selector:
+    app: transac-agg-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transac-agg-api-preview
+  namespace: dev
+  labels:
+    app: transac-agg-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
   selector:
     app: transac-agg-api
